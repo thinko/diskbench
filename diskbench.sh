@@ -85,13 +85,17 @@ launch_fio()
         log "Running: ${t}"
         log "Pass Number: ${COUNTER}"
         log "Test Size: ${TEST_SIZE}"
-        export RESULT_PATH="./results/${YEAR}${MONTH}${DAY}_${TIME}_${TEST_NAME}"
+        
+        export RESULT_PATH="./results"
+        export TEST_N="test-${YEAR}${MONTH}${DAY}_${TIME}_${TEST_NAME}-${t}"
         mkdir -p ${RESULT_PATH}
-        touch ${RESULT_PATH}/fio-${t}-pass-${COUNTER}
-        echo -n ${TEST_NAME} > ${RESULT_PATH}/NAME
-        #Drop caches
-        echo 3 > /proc/sys/vm/drop_caches
-        fio ${FIO_SERVERS} --output=${RESULT_PATH}/fio-${t}-pass-${COUNTER} ./enabled-tests/${t}
+        touch ${RESULT_PATH}/fio-${TEST_N}-pass-${COUNTER}
+        # echo -n ${TEST_NAME} > ${RESULT_PATH}/NAME
+        #Drop caches moved to job pre-run
+        # sync && echo 3 > /proc/sys/vm/drop_caches
+        cp ./enabled-tests/${t} ./${TEST_N}
+        sed -e "s/\${TEST_SIZE}/${TEST_SIZE}/" -e "s/\${TEST_DIRECTORY}/${TEST_DIRECTORY}/" -e "s/\${RUNTIME}/${RUNTIME}/" -i ${TEST_N}
+        fio ${FIO_SERVERS} --output=${RESULT_PATH}/fio-${TEST_N}-pass-${COUNTER} ./${TEST_N}
       log ""
     done
     let COUNTER+=1
