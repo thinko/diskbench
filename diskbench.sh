@@ -6,6 +6,7 @@ export TEST_SIZE="4096m"
 export TEST_FILENAME="fio_test_file"
 export IO_DEPTH="256"
 export RUNTIME="3600"
+export FIO_SERVERS=""
 
 # get time and create results folder
 YEAR=`date +%Y`
@@ -29,6 +30,7 @@ usage()
     echo "  -x              : Run extra tests: IOZone and Bonnie++ (optional)"
     echo "  -t              : Set the runtime for indiviual FIO test (default: 3600 seconds)"
     echo "  -l              : List available tests"
+    echo "  -h servers.txt  : File containing list of fio servers (1 per line)"
     echo ""
     echo "Example:"
     echo "  $0 -u /mnt/nfs/ -s 4G -i 256 -n mytestname -x -t 600"
@@ -89,7 +91,7 @@ launch_fio()
         echo -n ${TEST_NAME} > ${RESULT_PATH}/NAME
         #Drop caches
         echo 3 > /proc/sys/vm/drop_caches
-        fio --output=${RESULT_PATH}/fio-${t}-pass-${COUNTER} ./enabled-tests/${t}
+        fio ${FIO_SERVERS} --output=${RESULT_PATH}/fio-${t}-pass-${COUNTER} ./enabled-tests/${t}
       log ""
     done
     let COUNTER+=1
@@ -209,7 +211,7 @@ results()
   log "Results: results.${TEST_NAME}.${YEAR}${MONTH}${DAY}_${TIME}.tar.gz"
 }
 
-while getopts 'u:s:i:n:p:g:xt:l' OPTION
+while getopts 'u:s:i:n:p:g:x:t:c:l' OPTION
 do
     case ${OPTION} in
     u)
@@ -235,6 +237,9 @@ do
         ;;
     t)
         export RUNTIME="${OPTARG}"
+        ;;
+    h)
+        export FIO_SERVERS="--client ${OPTARG}"
         ;;
     l)
         available_tests
