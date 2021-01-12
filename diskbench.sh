@@ -211,7 +211,7 @@ results()
   log "Results: results.${TEST_NAME}.${YEAR}${MONTH}${DAY}_${TIME}.tar.gz"
 }
 
-while getopts 'u:s:i:n:p:g:x:t:c:l' OPTION
+while getopts 'u:s:i:n:p:g:x:t:h:l' OPTION
 do
     case ${OPTION} in
     u)
