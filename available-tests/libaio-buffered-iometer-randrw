@@ -13,3 +13,4 @@ iodepth=1
 filename=${TEST_FILENAME}
 directory=${TEST_DIRECTORY}
 runtime=${RUNTIME}
+exec_prerun=bash -c 'sync && echo 3 >/proc/sys/vm/drop_caches'
