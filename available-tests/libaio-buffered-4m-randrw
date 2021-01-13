@@ -2,6 +2,7 @@
 description=4M blocks (Buffered I/O and Sync on Finish)
 
 [libaio-buffered-sync-4m-randrw]
+exec_prerun=${PRERUN}
 bs=4m
 rw=randrw
 direct=0
@@ -12,4 +13,3 @@ iodepth=1
 filename=${TEST_FILENAME}
 directory=${TEST_DIRECTORY}
 runtime=${RUNTIME}
-exec_prerun=bash -c 'sync && echo 3 >/proc/sys/vm/drop_caches'

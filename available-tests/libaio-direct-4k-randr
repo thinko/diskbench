@@ -2,6 +2,7 @@
 description=libaio engine 4k blocks (Direct I/O) Random Reads
 
 [libaio-direct-4k-randr]
+exec_prerun=${PRERUN}
 bs=4k
 rw=randread
 direct=1
@@ -11,4 +12,4 @@ ioengine=libaio
 iodepth=${IO_DEPTH}
 filename=${TEST_FILENAME}
 directory=${TEST_DIRECTORY}
-runtime=${RUNTIME}exec_prerun=bash -c 'sync && echo 3 >/proc/sys/vm/drop_caches'
+runtime=${RUNTIME}

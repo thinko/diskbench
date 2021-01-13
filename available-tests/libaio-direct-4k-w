@@ -2,6 +2,7 @@
 description=libaio engine 4k blocks (Direct I/O) Write-only
 
 [libaio-direct-4k-w]
+exec_prerun=${PRERUN}
 bs=4k
 rw=write
 direct=1
@@ -11,4 +12,4 @@ ioengine=libaio
 iodepth=${IO_DEPTH}
 filename=${TEST_FILENAME}
 directory=${TEST_DIRECTORY}
-runtime=${RUNTIME}exec_prerun=bash -c 'sync && echo 3 >/proc/sys/vm/drop_caches'
+runtime=${RUNTIME}
